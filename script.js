@@ -37,8 +37,8 @@ async function startGame() {
   }
 
   document.getElementById('setupScreen').style.display = 'none';
-  document.getElementById('resultScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
+
   showTurn();
 }
 
@@ -50,8 +50,8 @@ function showTurn() {
   }
 
   document.getElementById('roundInfo').innerText = `${player.name}'s Turn`;
-  document.getElementById('characterReveal').innerText = player.character;
   document.getElementById('card').classList.remove('flipped');
+  document.getElementById('characterReveal').innerText = player.character;
 }
 
 function toggleCard() {
@@ -62,7 +62,7 @@ function toggleCard() {
 function submitGuess() {
   players[currentPlayerIndex].guessed = true;
   finishedPlayers.push({ name: players[currentPlayerIndex].name });
-  alert(`${players[currentPlayerIndex].name} has guessed their character!`);
+  alert(`${players[currentPlayerIndex].name} guessed!`);
   nextTurn();
 }
 
@@ -89,13 +89,10 @@ function endGame() {
   document.getElementById('ranking').innerHTML = html;
 }
 
-function restartGame() {
-  location.reload();
-}
-
 async function restartSameCategory() {
   finishedPlayers = [];
   currentPlayerIndex = 0;
+
   const response = await fetch(`${currentCategory}.json`);
   const data = await response.json();
   characters = [...data.characters];
@@ -109,6 +106,7 @@ async function restartSameCategory() {
 
   document.getElementById('resultScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
+
   showTurn();
 }
 
