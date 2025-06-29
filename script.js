@@ -1,6 +1,8 @@
 let players = [];
 let currentPlayerIndex = 0;
 let finishedPlayers = [];
+let characters = [];
+let currentCategory = "";
 
 function addPlayer() {
   const id = `player${players.length}`;
@@ -23,56 +25,52 @@ async function startGame() {
     }
   }
 
-  const category = document.getElementById('category').value;
-  const response = await fetch(`${category}.json`);
+  currentCategory = document.getElementById('category').value;
+  const response = await fetch(`${currentCategory}.json`);
   const data = await response.json();
+  characters = [...data.characters];
 
-  const availableCharacters = [...data.characters];
   for (let i = 0; i < players.length; i++) {
-    const randIndex = Math.floor(Math.random() * availableCharacters.length);
-    players[i].character = availableCharacters[randIndex];
-    availableCharacters.splice(randIndex, 1);
+    const randIndex = Math.floor(Math.random() * characters.length);
+    players[i].character = characters[randIndex];
+    characters.splice(randIndex, 1);
   }
 
   document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'none';
   document.getElementById('gameScreen').style.display = 'block';
-
   showTurn();
 }
 
 function showTurn() {
   const player = players[currentPlayerIndex];
   if (player.guessed) {
-    nextTurn(); return;
+    nextTurn();
+    return;
   }
 
   document.getElementById('roundInfo').innerText = `${player.name}'s Turn`;
-
   document.getElementById('characterReveal').innerText = player.character;
+  document.getElementById('card').classList.remove('flipped');
+}
 
-
-  document.getElementById('guessInput').value = '';
+function toggleCard() {
+  const card = document.getElementById('card');
+  card.classList.toggle('flipped');
 }
 
 function submitGuess() {
-  const guess = document.getElementById('guessInput').value.trim().toLowerCase();
-  const current = players[currentPlayerIndex];
-
-  if (guess === current.character.toLowerCase()) {
-    current.guessed = true;
-    finishedPlayers.push({ name: current.name });
-    alert(`${current.name} guessed correctly! 🎉`);
-  } else {
-    alert(`Wrong guess!`);
-  }
-
+  players[currentPlayerIndex].guessed = true;
+  finishedPlayers.push({ name: players[currentPlayerIndex].name });
+  alert(`${players[currentPlayerIndex].name} has guessed their character!`);
   nextTurn();
 }
 
 function nextTurn() {
   currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
 
-  if (finishedPlayers.length === players.length) {
+  const remaining = players.filter(p => !p.guessed);
+  if (remaining.length === 0) {
     endGame();
   } else {
     showTurn();
@@ -89,4 +87,31 @@ function endGame() {
   });
   html += '</ol>';
   document.getElementById('ranking').innerHTML = html;
+}
+
+function restartGame() {
+  location.reload();
+}
+
+async function restartSameCategory() {
+  finishedPlayers = [];
+  currentPlayerIndex = 0;
+  const response = await fetch(`${currentCategory}.json`);
+  const data = await response.json();
+  characters = [...data.characters];
+
+  for (let i = 0; i < players.length; i++) {
+    players[i].guessed = false;
+    const randIndex = Math.floor(Math.random() * characters.length);
+    players[i].character = characters[randIndex];
+    characters.splice(randIndex, 1);
+  }
+
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('gameScreen').style.display = 'block';
+  showTurn();
+}
+
+function goToHome() {
+  location.reload();
 }
