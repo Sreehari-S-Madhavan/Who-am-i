@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Who Am I? - Local Multiplayer Game</title>
+  <title>Who Am I? Game</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -27,15 +27,10 @@
 
   <div id="gameScreen" style="display:none;">
     <h2 id="roundInfo"></h2>
-    <div class="card-container">
-      <div class="card" id="card">
-        <div class="card-inner">
-          <div class="card-front" id="cardFront">Tap to Reveal</div>
-          <div class="card-back"><span id="characterReveal"></span></div>
-        </div>
-      </div>
+    <div id="cardBox">
+      <span id="characterDisplay" style="display:none;"></span>
     </div>
-    <button onclick="toggleCard()">Reveal / Hide</button>
+    <button onclick="toggleReveal()">Reveal / Hide</button>
     <button onclick="submitGuess()">I Guessed It!</button>
     <button onclick="nextTurn()">Next Turn</button>
   </div>
