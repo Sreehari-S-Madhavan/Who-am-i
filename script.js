@@ -48,8 +48,9 @@ function showTurn() {
 
   document.getElementById('roundInfo').innerText = `${player.name}'s Turn`;
 
-  document.getElementById('characterReveal').innerText =
-    `This player's character is: ${player.character} (Don't show them!)`;
+  document.getElementById('characterReveal').innerText = player.character;
+
+
   document.getElementById('guessInput').value = '';
 }
 
