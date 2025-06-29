@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Setup Screen -->
   <div id="setupScreen">
     <h1>Who Am I?</h1>
     <label for="category">Choose Category:</label>
@@ -25,12 +26,13 @@
     <button onclick="startGame()">Start Game</button>
   </div>
 
+  <!-- Game Screen -->
   <div id="gameScreen" style="display:none;">
     <h2 id="roundInfo"></h2>
     <div class="card-container">
       <div class="card" id="card">
         <div class="card-inner" id="cardInner">
-          <div class="card-front">Tap to Reveal</div>
+          <div class="card-front" id="cardFront">Tap to Reveal</div>
           <div class="card-back" id="characterReveal">Character</div>
         </div>
       </div>
@@ -40,17 +42,15 @@
     <button onclick="nextTurn()">Next Turn</button>
   </div>
 
+  <!-- Result Screen -->
   <div id="resultScreen" style="display:none;">
     <h1>Game Over!</h1>
     <div id="ranking"></div>
-    <button onclick="location.reload()">Play Again</button>
+    <button onclick="restartGame()">Choose Another Category</button>
+    <button onclick="restartSameCategory()">Play Again (Same Category)</button>
+    <button onclick="goToHome()">Go to Home</button>
   </div>
 
   <script src="script.js"></script>
-  <script>
-    function toggleCard() {
-      document.getElementById('card').classList.toggle('flipped');
-    }
-  </script>
 </body>
 </html>
